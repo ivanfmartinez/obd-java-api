@@ -42,6 +42,7 @@ public enum AvailableCommandNames {
     DISTANCE_TRAVELED_AFTER_CODES_CLEARED("Distance since codes cleared"),
     CONTROL_MODULE_VOLTAGE("Control Module Power Supply "),
     ENGINE_FUEL_RATE("Engine Fuel Rate"),
+    RELATIVE_FUEL_RAIL_PRESSURE("Relative fuel rail pressure"),
     FUEL_RAIL_PRESSURE("Fuel Rail Pressure"),
     VIN("Vehicle Identification Number (VIN)"),
     DISTANCE_TRAVELED_MIL_ON("Distance traveled with MIL on"),
