@@ -57,7 +57,9 @@ public enum AvailableCommandNames {
     WIDEBAND_AIR_FUEL_RATIO("Wideband Air/Fuel Ratio"),
     DESCRIBE_PROTOCOL("Describe protocol"),
     DESCRIBE_PROTOCOL_NUMBER("Describe protocol number"),
-    IGNITION_MONITOR("Ignition monitor")
+    IGNITION_MONITOR("Ignition monitor"),
+    FAULT_CODE_THAT_CAUSED_FREEZE_FRAME("Fault code that caused the recording of freeze frame data"),
+    FUEL_SYSTEM_STATUS("Fuel system status")
     ;
 
     private final String value;
