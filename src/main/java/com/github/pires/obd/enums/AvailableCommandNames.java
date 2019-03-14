@@ -59,7 +59,9 @@ public enum AvailableCommandNames {
     DESCRIBE_PROTOCOL_NUMBER("Describe protocol number"),
     IGNITION_MONITOR("Ignition monitor"),
     FAULT_CODE_THAT_CAUSED_FREEZE_FRAME("Fault code that caused the recording of freeze frame data"),
-    FUEL_SYSTEM_STATUS("Fuel system status")
+    FUEL_SYSTEM_STATUS("Fuel system status"),
+    SECONDARY_INTAKE_STATUS("Status of the secondary intake circuit"),
+    OBD_COMPUTER_SPECIFICATION("OBD computer specification")
     ;
 
     private final String value;
