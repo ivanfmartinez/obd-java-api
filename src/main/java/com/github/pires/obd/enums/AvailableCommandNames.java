@@ -62,7 +62,9 @@ public enum AvailableCommandNames {
     FAULT_CODE_THAT_CAUSED_FREEZE_FRAME("Fault code that caused the recording of freeze frame data"),
     FUEL_SYSTEM_STATUS("Fuel system status"),
     SECONDARY_INTAKE_STATUS("Status of the secondary intake circuit"),
-    OBD_COMPUTER_SPECIFICATION("OBD computer specification")
+    OBD_COMPUTER_SPECIFICATION("OBD computer specification"),
+    NUMBER_OF_WARNINGS_SINCE_DTC_WERE_CLEARED("Number of warning(s) since faults (DTC) were cleared"),
+    EVAP_SYSTEM_VAPOR_PRESSURE("Evaporation system vapour pressure")
     ;
 
     private final String value;
