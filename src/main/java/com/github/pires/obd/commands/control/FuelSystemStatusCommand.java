@@ -63,6 +63,10 @@ public class FuelSystemStatusCommand extends ObdCommand {
 	}
 
 	private String getStatusFromByte(Integer code) {
+		if(code == null) {
+			return "";
+		}
+		
 		final String hexCode = Integer.toHexString(code);
 		switch (hexCode) {
 		case "16":
