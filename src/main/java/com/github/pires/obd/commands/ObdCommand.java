@@ -390,6 +390,15 @@ public abstract class ObdCommand {
             return cmd;
         }
     }
+    
+    /**
+     * <p>getCommand.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
+    public final String getCommand() {
+        return cmd;
+    }
 
     @Override
     public boolean equals(Object o) {
