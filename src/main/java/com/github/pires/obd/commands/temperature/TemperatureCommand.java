@@ -71,7 +71,7 @@ public abstract class TemperatureCommand extends ObdCommand implements
     /** {@inheritDoc} */
     @Override
     public String getResultUnit() {
-        return useImperialUnits ? "F" : "C";
+        return useImperialUnits ? "°F" : "°C";
     }
 
     /**
