@@ -45,6 +45,7 @@ public enum AvailableCommandNames {
     RELATIVE_FUEL_RAIL_PRESSURE("Relative fuel rail pressure"),
     FUEL_RAIL_PRESSURE("Fuel Rail Pressure"),
     VIN("Vehicle Identification Number (VIN)"),
+    ECU_NAME("ECU name"),
     DISTANCE_TRAVELED_MIL_ON("Distance traveled with MIL on"),
     TIME_TRAVELED_MIL_ON("Time run with MIL on"),
     TIME_SINCE_TC_CLEARED("Time since trouble codes cleared"),
