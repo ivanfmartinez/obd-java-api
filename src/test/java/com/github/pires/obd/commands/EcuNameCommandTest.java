@@ -76,21 +76,6 @@ public class EcuNameCommandTest {
      */
     @Test
     public void ecuName() throws IOException {
-//        byte[] v = byteStringToByteArray("49 0A 00 45 00 43 00 55 00 20 00 53 00 69 00 6D 00 75 00 6C 00 61 00 74 00 6F 00 72");
-//        for (byte b : v) {
-//        	System.out.println(b);
-//            expectLastCall().andReturn(b);
-//        }
-//
-//        replayAll();
-//        String res = "ECU Simulator";
-//
-//        // call the method to test
-//        command.readResult(mockIn);
-//
-//        assertEquals(command.getFormattedResult(), res);
-
-//        verifyAll();
     	
     	byte[] v = new byte[]{
                 '4', '9', ' ', '0', 'A', ' ', '0', '0', ' ', '4', '5', ' ', '0', '0', ' ', '4', '3', ' ', '0', '0', '\n',
@@ -104,6 +89,38 @@ public class EcuNameCommandTest {
 
         replayAll();
         String res = "ECU Simulator";
+
+        // call the method to test
+        command.readResult(mockIn);
+
+        assertEquals(command.getFormattedResult(), res);
+
+        verifyAll();
+    }
+    
+    /**
+     * Test Ecu name can format
+     *
+     * @throws IOException
+     */
+    @Test
+    public void ecuNameCan() throws IOException {
+    	
+    	//0170:490A0145434D1:002D456E67696E2:65436F6E74726F3:6C000000000000
+    	
+    	byte[] v = new byte[]{
+    			'0', '1', '7', '0', ':',
+                '4', '9', '0', 'A', '0', '1', '4', '5', '4', '3', '4', 'D', '1', ':',
+                '0', '0', '2', 'D', '4', '5', '6', 'E', '6', '7', '6', '9', '6', 'E', '2', ':',
+                '6', '5', '4', '3', '6', 'F', '6', 'E', '7', '4', '7', '2', '6', 'F', '3', ':',
+                '6', 'C', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '>'
+        };
+        for (byte b : v) {
+            expectLastCall().andReturn(b);
+        }
+
+        replayAll();
+        String res = "ECM-EngineControl";
 
         // call the method to test
         command.readResult(mockIn);

@@ -34,19 +34,16 @@ public class EcuNameCommand extends PersistentCommand{
 	@Override
 	protected void performCalculations() {
 		final String result = getResult();
-		System.out.println(result);
 		String workingData;
 		
 		if (result.contains(":")) {// CAN(ISO-15765) protocol.
-			workingData = result.replaceAll(".:", "").substring(9);// 9 is xxx490201, xxx is bytes of information to
-																	// follow.
-			Matcher m = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE)
-					.matcher(VinCommand.convertHexToString(workingData));
-			if (m.find())
-				workingData = result.replaceAll("0:49", "").replaceAll(".:", "");
+			//0170:490A0145434D1:002D456E67696E2:65436F6E74726F3:6C000000000000
+			workingData = result.replaceAll(".:", "").substring(9);// 9 is xxx490A01, xxx is bytes of information to
+
 		} else {// ISO9141-2, KWP2000 Fast and KWP2000 5Kbps (ISO15031) protocols.
 			workingData = result.replaceAll("490A0.", "");
 		}
+
 		ecuName = VinCommand.convertHexToString(workingData).replaceAll("[\u0000-\u001f]", "");
 
 	}
@@ -65,5 +62,12 @@ public class EcuNameCommand extends PersistentCommand{
 	public String getName() {
 		return AvailableCommandNames.ECU_NAME.getValue();
 	}
+
+	@Override
+	protected void fillBuffer() {
+		// do nothing
+	}
+	
+	
 
 }
