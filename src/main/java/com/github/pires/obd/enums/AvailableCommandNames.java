@@ -42,8 +42,10 @@ public enum AvailableCommandNames {
     DISTANCE_TRAVELED_AFTER_CODES_CLEARED("Distance since codes cleared"),
     CONTROL_MODULE_VOLTAGE("Control Module Power Supply "),
     ENGINE_FUEL_RATE("Engine Fuel Rate"),
+    RELATIVE_FUEL_RAIL_PRESSURE("Relative fuel rail pressure"),
     FUEL_RAIL_PRESSURE("Fuel Rail Pressure"),
     VIN("Vehicle Identification Number (VIN)"),
+    ECU_NAME("ECU name"),
     DISTANCE_TRAVELED_MIL_ON("Distance traveled with MIL on"),
     TIME_TRAVELED_MIL_ON("Time run with MIL on"),
     TIME_SINCE_TC_CLEARED("Time since trouble codes cleared"),
@@ -57,7 +59,13 @@ public enum AvailableCommandNames {
     WIDEBAND_AIR_FUEL_RATIO("Wideband Air/Fuel Ratio"),
     DESCRIBE_PROTOCOL("Describe protocol"),
     DESCRIBE_PROTOCOL_NUMBER("Describe protocol number"),
-    IGNITION_MONITOR("Ignition monitor")
+    IGNITION_MONITOR("Ignition monitor"),
+    FAULT_CODE_THAT_CAUSED_FREEZE_FRAME("Fault code that caused the recording of freeze frame data"),
+    FUEL_SYSTEM_STATUS("Fuel system status"),
+    SECONDARY_INTAKE_STATUS("Status of the secondary intake circuit"),
+    OBD_COMPUTER_SPECIFICATION("OBD computer specification"),
+    NUMBER_OF_WARNINGS_SINCE_DTC_WERE_CLEARED("Number of warning(s) since faults (DTC) were cleared"),
+    EVAP_SYSTEM_VAPOR_PRESSURE("Evaporation system vapour pressure")
     ;
 
     private final String value;

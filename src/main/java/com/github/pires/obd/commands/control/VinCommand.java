@@ -85,7 +85,7 @@ public class VinCommand extends PersistentCommand {
     protected void fillBuffer() {
     }
 
-    public String convertHexToString(String hex) {
+    public static String convertHexToString(String hex) {
         StringBuilder sb = new StringBuilder();
         //49204c6f7665204a617661 split into two characters 49, 20, 4c...
         for (int i = 0; i < hex.length() - 1; i += 2) {
