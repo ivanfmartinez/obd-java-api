@@ -8,13 +8,13 @@
         <version>9</version>
     </parent>
 
-    <groupId>com.github.pires</groupId>
+    <groupId>com.github.trevormerritt</groupId>
     <artifactId>obd-java-api</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>OBD Java API</name>
-    <url>https://github.com/pires/obd-java-api</url>
+    <url>https://github.com/trevormerritt/obd-java-api</url>
     <description>OBD Java API compatible with ELM327.</description>
 
     <licenses>
@@ -26,9 +26,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:pires/obd-java-api.git</connection>
-        <developerConnection>scm:git:git@github.com:pires/obd-java-api.git</developerConnection>
-        <url>git@github.com:pires/obd-java-api.git</url>
+        <connection>scm:git:git@github.com:trevormerritt/obd-java-api.git</connection>
+        <developerConnection>scm:git:git@github.com:trevormerritt/obd-java-api.git</developerConnection>
+        <url>git@github.com:trevormerritt/obd-java-api.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -41,6 +41,13 @@
                 <role>developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>trevormerritt</id>
+            <name>Trevor Merritt</name>
+            <email>trevor.merritt@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
     </developers>
 
     <distributionManagement>
