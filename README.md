@@ -3,6 +3,8 @@ obd-java-api
 
 OBD-II Java API
 
+** I've just added some patches from various forks and have it here so I can use it as I need.
+
 ## NOTICE
 
 **I am no longer involved in any way with OBD and related activities, so don't expect my feedback on issues, pull-requests and most of all, email.**
