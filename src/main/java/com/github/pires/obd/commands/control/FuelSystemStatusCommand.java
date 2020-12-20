@@ -21,7 +21,7 @@ public class FuelSystemStatusCommand extends ObdCommand {
 	private String secondSystemStatus;
 
 	public FuelSystemStatusCommand() {
-		super("00 03");
+		super("01 03");
 	}
 
 	@Override

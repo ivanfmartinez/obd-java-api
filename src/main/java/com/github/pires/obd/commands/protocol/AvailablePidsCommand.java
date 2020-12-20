@@ -12,6 +12,8 @@
  */
 package com.github.pires.obd.commands.protocol;
 
+import java.util.Set;
+
 import com.github.pires.obd.commands.PersistentCommand;
 
 /**
@@ -20,6 +22,8 @@ import com.github.pires.obd.commands.PersistentCommand;
  */
 public abstract class AvailablePidsCommand extends PersistentCommand {
 
+	private int start;
+	
     /**
      * Default ctor.
      *
@@ -27,6 +31,7 @@ public abstract class AvailablePidsCommand extends PersistentCommand {
      */
     public AvailablePidsCommand(String command) {
         super(command);
+        start = Integer.valueOf(getCleanCommand().substring(2,4),16)+1;
     }
 
     /**
@@ -48,6 +53,39 @@ public abstract class AvailablePidsCommand extends PersistentCommand {
     @Override
     public String getFormattedResult() {
         return getCalculatedResult();
+    }
+    
+    public boolean updatePids(Set<Integer> pids) {
+		// As vezes vem pontos no inicio...
+		String r = rawData.replaceAll("[.]", "");
+		long l = 0;
+		boolean valid = false;
+		// Chevy Bolt returns many values , consider all of them as valid
+		// Combine all bits set
+		// 410080000001 410080000001 410080080013 410000000001 410080000001 410080000001
+		// 410080080013 410080000001 410080000001 410080000001 410000000001 410080000001
+		final String expectedStart = getExpectedResponsePrefix();
+		while ((r.length() >= 12) && r.startsWith(expectedStart)) {
+			valid  = true;
+			l |= Long.valueOf(r.substring(4, 12), 16);
+			r = r.substring(12);
+		}
+		if (valid) {
+			// https://en.wikipedia.org/wiki/OBD-II_PIDs#Service_01_PID_00
+			final String bin = Long.toBinaryString(l + 0x100000000l).substring(1);
+			int pid = start;
+			for (int idx = 0; idx < 32; idx++) {
+				if (bin.charAt(idx) == '0') {
+					pids.remove(pid);
+				} else {
+					pids.add(pid);
+				}
+				pid++;
+			}
+			return true;
+		} else {
+			return false;
+		}
     }
 
     /** {@inheritDoc} */

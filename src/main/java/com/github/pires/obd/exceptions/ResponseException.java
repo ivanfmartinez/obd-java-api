@@ -12,6 +12,8 @@
  */
 package com.github.pires.obd.exceptions;
 
+import java.util.regex.Pattern;
+
 /**
  * Generic message error
  *
@@ -24,7 +26,7 @@ public class ResponseException extends RuntimeException {
 
     private String command;
 
-    private boolean matchRegex;
+    private Pattern regex;
 
     /**
      * <p>Constructor for ResponseException.</p>
@@ -43,7 +45,9 @@ public class ResponseException extends RuntimeException {
      */
     protected ResponseException(String message, boolean matchRegex) {
         this.message = message;
-        this.matchRegex = matchRegex;
+        if (matchRegex) {
+        	regex = Pattern.compile(clean(message));
+        }
     }
 
     private static String clean(String s) {
@@ -58,8 +62,8 @@ public class ResponseException extends RuntimeException {
      */
     public boolean isError(String response) {
         this.response = response;
-        if (matchRegex) {
-            return clean(response).matches(clean(message));
+        if (regex != null) {
+            return regex.matcher(clean(response)).matches();
         } else {
             return clean(response).contains(clean(message));
         }

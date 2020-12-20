@@ -13,16 +13,22 @@
 package com.github.pires.obd.exceptions;
 
 /**
- * Thrown when there is a "NO DATA" message.
+ * Thrown when there is "ERROR" in the response
  *
  */
-public class NoDataException extends ResponseException {
+public class UnknownResponseException extends ResponseException {
 
     /**
-     * <p>Constructor for NoDataException.</p>
+     * <p>Constructor for UnknownErrorException.</p>
      */
-    public NoDataException() {
-    	super("NO DATA");
+    public UnknownResponseException(String message) {
+        super(message);
     }
 
+	@Override
+	public String toString() {
+		return "UnknownResponseException [toString()=" + super.toString() + " message=" + getMessage() + "]";
+	}
+
+    
 }

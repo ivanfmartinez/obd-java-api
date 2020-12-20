@@ -16,13 +16,13 @@ package com.github.pires.obd.exceptions;
  * Thrown when there is a "NO DATA" message.
  *
  */
-public class NoDataException extends ResponseException {
+public class CanErrorException extends ResponseException {
 
     /**
      * <p>Constructor for NoDataException.</p>
      */
-    public NoDataException() {
-    	super("NO DATA");
+    public CanErrorException() {
+    	super("CAN ERROR");
     }
 
 }

@@ -12,13 +12,25 @@
  */
 package com.github.pires.obd.commands;
 
-import com.github.pires.obd.exceptions.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import com.github.pires.obd.exceptions.BusInitException;
+import com.github.pires.obd.exceptions.CanErrorException;
+import com.github.pires.obd.exceptions.MisunderstoodCommandException;
+import com.github.pires.obd.exceptions.NoDataException;
+import com.github.pires.obd.exceptions.NonNumericResponseException;
+import com.github.pires.obd.exceptions.ResponseException;
+import com.github.pires.obd.exceptions.ResponseFailureException;
+import com.github.pires.obd.exceptions.StoppedException;
+import com.github.pires.obd.exceptions.UnableToConnectException;
+import com.github.pires.obd.exceptions.UnknownErrorException;
+import com.github.pires.obd.exceptions.UnknownResponseException;
+import com.github.pires.obd.exceptions.UnsupportedCommandException;
 
 /**
  * Base OBD command.
@@ -26,18 +38,52 @@ import java.util.regex.Pattern;
  */
 public abstract class ObdCommand {
 
-    /**
-     * Error classes to be tested in order
-     */
-    private final Class[] ERROR_CLASSES = {
-            UnableToConnectException.class,
-            BusInitException.class,
-            MisunderstoodCommandException.class,
-            NoDataException.class,
-            StoppedException.class,
-            UnknownErrorException.class,
-            UnsupportedCommandException.class
-    };
+	private static class ErrorChecking {
+	    /**
+	     * Error classes to be tested in order
+	     */
+	    private final Class[] ERROR_CLASSES = {
+	            UnableToConnectException.class,
+	            BusInitException.class,
+	            MisunderstoodCommandException.class,
+	            NoDataException.class,
+	            CanErrorException.class,
+	            StoppedException.class,
+	            UnknownErrorException.class,
+	            UnsupportedCommandException.class,
+	            ResponseFailureException.class
+	    };
+
+	    private final List<ResponseException> exceptions = new ArrayList<>();
+		
+		public ErrorChecking() {
+			for (Class c : ERROR_CLASSES) {
+				try {
+					exceptions.add((ResponseException) c.newInstance());
+				} catch (InstantiationException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		public void check(String cmd, String response) {
+			for (ResponseException e : exceptions) {
+				if (e.isError(response)) {
+					try {
+						final ResponseException newE = e.getClass().newInstance();
+						newE.setCommand(cmd);
+						newE.isError(response);
+						throw newE;
+					} catch (InstantiationException | IllegalAccessException e1) {
+						throw new RuntimeException(e1);
+					}
+				}
+			}
+		}
+	}
+	
+	private static final ErrorChecking EXCEPTIONS = new ErrorChecking();
+	
     protected ArrayList<Integer> buffer = null;
     protected String cmd = null;
     protected boolean useImperialUnits = false;
@@ -45,6 +91,7 @@ public abstract class ObdCommand {
     protected Long responseDelayInMs = null;
     private long start;
     private long end;
+    private boolean numericCommand = false;
 
     /**
      * Default ctor to use
@@ -54,12 +101,26 @@ public abstract class ObdCommand {
     public ObdCommand(String command) {
         this.cmd = command;
         this.buffer = new ArrayList<>();
+        numericCommand = (cmd.length()) > 2 && hexDigits(cmd.substring(0,2));
     }
 
     /**
      * Prevent empty instantiation
      */
     private ObdCommand() {
+    }
+
+    private boolean hexDigit(char c) {
+    	return Character.digit(c, 16) != -1;
+    }
+
+    private boolean hexDigits(String s) {
+    	for (int x = 0; x < s.length(); x++) {
+    		if (Character.digit(s.charAt(x), 16) == -1) {
+    			return false;
+    		}
+    	}
+    	return true;
     }
 
     /**
@@ -174,6 +235,10 @@ public abstract class ObdCommand {
             throw new NonNumericResponseException(rawData);
         }
 
+    	if (numericCommand) {
+    		checkResponsePrefix(rawData);
+    	}
+
         // read string each two chars
         buffer.clear();
         int begin = 0;
@@ -228,23 +293,30 @@ public abstract class ObdCommand {
     }
 
     void checkForErrors() {
-        for (Class<? extends ResponseException> errorClass : ERROR_CLASSES) {
-            ResponseException messageError;
-
-            try {
-                messageError = errorClass.newInstance();
-                messageError.setCommand(this.cmd);
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (messageError.isError(rawData)) {
-                throw messageError;
-            }
-        }
+    	EXCEPTIONS.check(cmd, rawData);
+        
     }
+
+    public String getExpectedResponsePrefix() {
+    	final String cleanCmd = cmd.replaceAll("\\s", "");
+		String expectedResponse = Integer.toHexString(0x140 + Integer.parseInt(cleanCmd.substring(0,2), 16)).substring(1).toUpperCase();
+		if (cleanCmd.length() >= 4 && hexDigits(cleanCmd.substring(2,4))) {
+			expectedResponse += Integer.toHexString(0x100 + Integer.parseInt(cleanCmd.substring(2,4), 16)).substring(1).toUpperCase();
+		}
+		return expectedResponse;
+    }
+    
+	protected void checkResponsePrefix(String response) {
+		// response should start with (0x40 + cmd0) cmd1
+		// or 7F for failures...
+		final String expectedResponse = getExpectedResponsePrefix();
+		if (!response.startsWith(expectedResponse)) {
+			final UnknownResponseException e = new UnknownResponseException("Invalid response received : " + rawData + " expected to start with " + expectedResponse);
+			e.setCommand(this.cmd);
+			e.isError(rawData);
+			throw e;
+		}
+	}
 
     /**
      * <p>getResult.</p>
@@ -375,9 +447,15 @@ public abstract class ObdCommand {
      * @since 1.0-RC12
      */
     public final String getCommandPID() {
-        return cmd.substring(3);
+    	final String cleanCmd = getCleanCommand();
+        return (cleanCmd.length() >= 2) ? cleanCmd.substring(2) : "";
     }
 
+    public String getCleanCommand() {
+    	final String cleanCmd = getCommand();
+        return removeAll(WHITESPACE_PATTERN, cleanCmd); 
+    }
+    
     /**
      * <p>getCommandMode.</p>
      *

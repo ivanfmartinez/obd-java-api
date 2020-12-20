@@ -13,16 +13,16 @@
 package com.github.pires.obd.exceptions;
 
 /**
- * Thrown when there is a "NO DATA" message.
+ * Thrown when there is a "?" message.
  *
  */
-public class NoDataException extends ResponseException {
+public class ResponseFailureException extends ResponseException {
 
     /**
-     * <p>Constructor for NoDataException.</p>
+     * <p>Constructor for UnsupportedCommandException.</p>
      */
-    public NoDataException() {
-    	super("NO DATA");
+    public ResponseFailureException() {
+        super("7F [0-F][0-F] [0-F][0-F]", true);
     }
 
 }

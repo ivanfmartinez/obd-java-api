@@ -53,6 +53,9 @@ public enum AvailableCommandNames {
     PIDS_01_20("Available PIDs 01-20"),
     PIDS_21_40("Available PIDs 21-40"),
     PIDS_41_60("Available PIDs 41-60"),
+    PIDS_61_80("Available PIDs 61-80"),
+    PIDS_81_A0("Available PIDs 81-A0"),
+    PIDS_A1_C0("Available PIDs A1-C0"),
     ABS_LOAD("Absolute load"),
     ENGINE_OIL_TEMP("Engine oil temperature"),
     AIR_FUEL_RATIO("Air/Fuel Ratio"),
@@ -65,7 +68,8 @@ public enum AvailableCommandNames {
     SECONDARY_INTAKE_STATUS("Status of the secondary intake circuit"),
     OBD_COMPUTER_SPECIFICATION("OBD computer specification"),
     NUMBER_OF_WARNINGS_SINCE_DTC_WERE_CLEARED("Number of warning(s) since faults (DTC) were cleared"),
-    EVAP_SYSTEM_VAPOR_PRESSURE("Evaporation system vapour pressure")
+    EVAP_SYSTEM_VAPOR_PRESSURE("Evaporation system vapour pressure"),
+    READ_VOLTAGE("Read Voltage")
     ;
 
     private final String value;
