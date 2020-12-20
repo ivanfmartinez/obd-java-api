@@ -48,6 +48,7 @@
             <roles>
                 <role>developer</role>
             </roles>
+        </developer>
     </developers>
 
     <distributionManagement>
